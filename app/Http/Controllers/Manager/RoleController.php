@@ -7,8 +7,6 @@ use App\model\Role;
 use App\model\Trash;
 use Illuminate\Http\Request;
 use App\model\Module;
-use Illuminate\Routing\Route;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use \Pagging;
 use \Utility;
@@ -17,12 +15,10 @@ class RoleController extends BaseAdminController
 {
     protected $arrStatus = array(-1 => 'Chọn trạng thái', \CGlobal::status_show => 'Hiện', \CGlobal::status_hide => 'Ẩn');
     protected $arrAllowUL = array(-1 => 'Chọn cho phép upload', \CGlobal::status_show => 'Có', \CGlobal::status_hide => 'Không');
-
     public function __construct()
     {
         parent::__construct();
     }
-
     public function listView(Request $request)
     {
         $this->menu();
@@ -34,15 +30,11 @@ class RoleController extends BaseAdminController
         $offset = ($pageNo - 1) * $limit;
         $search = array();
         $total = 0;
-
         $search['role_title'] = $request->has('role_title') ? $request->role_title : '';
         $search['role_status'] = (int)$request->has('role_status') ? $request->role_status : -1;
         $dataSearch = Role::searchByCondition($search, $limit, $offset, $total);
-//        $total = 5000;
         $paging = $total > 0 ? Pagging::getPager($pageScroll, $pageNo, $total, $limit, $search,$request->url()) : '';
-
         $optionStatus = Utility::getOption($this->arrStatus, $search['role_status']);
-
         return view('manager.role.list', ['search' => $search, 'data' => $dataSearch, 'total' => $total, 'paging' => $paging, 'optionStatus' => $optionStatus]);
     }
 
@@ -50,10 +42,7 @@ class RoleController extends BaseAdminController
         $this->menu();
         $this->title($id==0?'Thêm mới Role':'Cập nhật Role');
         $this->breadcrumb([['title'=>'Role','link'=>\route('admin.role'),'active'=>''],['title'=>$id==0?'thêm mới':'cập nhật','link'=>\route('admin.role_edit',['id'=>$id]),'active'=>'active']]);
-        $data = array();
-        if($id>0){
-            $data = Role::getById($id);
-        }
+        $data = $id>0? $data = Role::getById($id):array();
         $arrModule = Module::getAll(array(), 0);
         $optionStatus = Utility::getOption($this->arrStatus,isset($data['role_status'])?$data['role_status']:\CGlobal::status_show);
         $optionAllowUL = Utility::getOption($this->arrAllowUL,isset($data['allow_upload'])?$data['allow_upload']:\CGlobal::status_show);

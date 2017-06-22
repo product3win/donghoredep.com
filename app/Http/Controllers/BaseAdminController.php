@@ -12,18 +12,15 @@ class BaseAdminController extends Controller
 {
     protected $user = array();
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->middleware('admin');
     }
 
-    public function title($title_name)
-    {
+    public function title($title_name){
         \Loader::loadTitle($title_name);
     }
 
-    public function menu()
-    {
+    public function menu(){
         $rName = Route::current()->getName();
         $arMenu = array();
         $arMenu[] = array('title' => 'Đơn hàng', 'link' => route('admin.order'), 'icon' => 'fa-globe fa-admin', 'active' => $this->checkRouteName($rName, 'admin.order') ? 'active' : '');
@@ -31,7 +28,7 @@ class BaseAdminController extends Controller
         $arMenu[] = array('title' => 'Sản phẩm', 'link' => route('admin.product'), 'icon' => 'fa-bookmark fa-admin', 'active' => $this->checkRouteName($rName, 'admin.product') ? 'active' : '');
         $arMenu[] = array('title' => 'Tin tức', 'link' => route('admin.news'), 'icon' => 'fa-quote-right fa-admin', 'active' => $this->checkRouteName($rName, 'admin.news') ? 'active' : '');
         $arMenu[] = array('title' => 'Banner', 'link' => route('admin.banner'), 'icon' => 'fa-image fa-admin', 'active' => $this->checkRouteName($rName, 'admin.banner') ? 'active' : '');
-        $arMenu[] = array('title' => 'Static', 'link' => route('admin.static'), 'icon' => 'fa-image fa-admin', 'active' => $this->checkRouteName($rName, 'admin.static') ? 'active' : '');
+        $arMenu[] = array('title' => 'Static', 'link' => route('admin.static'), 'icon' => 'fa-cogs fa-admin', 'active' => $this->checkRouteName($rName, 'admin.static') ? 'active' : '');
         $arMenu[] = array('title' => 'Hệ thống', 'link' => 'javascrip:void(0)', 'icon' => 'fa-angle-down',
             'submenu' => array(
                 array('title' => 'Module', 'link' => route('admin.module'), 'icon' => 'fa-gears fa-admin', 'active' => $this->checkRouteName($rName, 'admin.module') ? 'active' : ''),
@@ -42,8 +39,7 @@ class BaseAdminController extends Controller
         \Loader::loadMenu($arMenu);
     }
 
-    public function checkRouteName($routeName = '', $nameCheck = '')
-    {
+    public function checkRouteName($routeName = '', $nameCheck = ''){
         $r = false;
         if ($routeName === $nameCheck || strtolower(substr($routeName, 0, strlen($nameCheck))) === strtolower($nameCheck)) {
             $r = true;
@@ -51,8 +47,7 @@ class BaseAdminController extends Controller
         return $r;
     }
 
-    public function breadcrumb($listItem)
-    {
+    public function breadcrumb($listItem){
         \Loader::loadBreadcrumb($listItem);
     }
 }

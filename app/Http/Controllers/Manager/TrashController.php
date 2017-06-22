@@ -8,14 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use \Pagging;
 
-class TrashController extends BaseAdminController
-{
-    public function __construct()
-    {
+class TrashController extends BaseAdminController{
+    public function __construct(){
         parent::__construct();
     }
-    public function listView(Request $request)
-    {
+    public function listView(Request $request){
         $this->menu();
         $this->title('Trash');
         $this->breadcrumb([['title' => 'Trash', 'link' => route('admin.trash'), 'active' => 'active']]);
@@ -25,11 +22,9 @@ class TrashController extends BaseAdminController
         $offset = ($pageNo - 1) * $limit;
         $search = array();
         $total = 0;
-
         $search['trash_title'] = $request->has('trash_title') ? addslashes($request->trash_title) : '';
         $dataSearch = Trash::searchByCondition($search, $limit, $offset, $total);
         $paging = $total > 0 ? Pagging::getPager($pageScroll, $pageNo, $total, $limit, $search,$request->url()) : '';
-
         return view('manager.trash.list', ['search' => $search, 'data' => $dataSearch, 'total' => $total, 'paging' => $paging]);
     }
 

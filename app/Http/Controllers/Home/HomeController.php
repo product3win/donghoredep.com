@@ -34,7 +34,7 @@ class HomeController extends BaseHomController
 
         return view('home.index',array_merge($header,['banner'=>$banner,'brand'=>$brand,'totalFocus'=>$totalFocus,'pdFocus'=>$pdFocus,'totalHost'=>$totalHost,'pdHost'=>$pdHost,'totalMost'=>$totalMost,'pdMost'=>$pdMost,'totalCheapest'=>$totalCheapest,'pdCheapest'=>$pdCheapest]));
     }
-    public function details(Request $request)
+    public function details(Request $request,$name)
     {
         $this->menu($request);
         \Loader::loadTitle( 'Donghoredep.com');
@@ -53,45 +53,5 @@ class HomeController extends BaseHomController
     public function category(Request $request,$name='',$product=''){
         $this->menu($request);
         return view('home.index');
-    }
-    public function ajaxindexproduct(Request $request){
-        $type = $request->type;
-        $pageNo = $request->page>0?$request->page:1;
-        $limit = \CGlobal::num_record_per_page_product;
-        $offset = ($pageNo - 1) * $limit;
-        $total = 0;
-        $html = '';
-        if($type>0){
-            $typeProduct = '';
-            switch ($type){
-                case 1: $typeProduct = 'product_focus'; break;
-                case 2:$typeProduct = 'product_host'; break;
-                case 3:$typeProduct ='product_buy_most';break;
-                case 4:$typeProduct = 'product_cheapest';break;
-            }
-            $pd = Product::searchByCondition(array($typeProduct=>\CGlobal::status_show,'product_status'=>\CGlobal::status_show),$limit,$offset,$total);
-            if(!empty($pd)){
-                foreach ($pd as $item){
-                    $html = $html.'
-                        <div class="col-sm-4 col-md-3 itemproduct">
-                            <div class="thumbnail" title="'.$item->product_title.'">
-                                <img src="'.\ThumbImg::thumbBaseNormal(Product::FOLDER,$item->product_id,$item->product_media,300,250,'',true,true,true).'" alt="'.$item->product_title.'">
-                                <div class="caption" title="'.$item->product_title.'">
-                                    <h4 title="'.$item->product_title.'">'.$item->product_title.'</h4>
-                                    <h5 title="'.$item->product_title.'">
-                                        <div class="gia" title="'.$item->product_title.'">
-                                            <span class="ok">'.\Funclip::numberFormat($item->product_price).'đ</span><br>
-                                            <span class="notok">'.\Funclip::numberFormat($item->product_price_saleof).'đ</span>
-                                        </div>
-                                        <a href="'.\route('home.details',['name'=>\Utility::pregReplaceStringAlias($item->product_title)]).'" class="btn btn-default" role="button" title="'.$item->product_title.'">Xem ngay</a>
-                                    </h5>
-                                </div>
-                            </div>
-                        </div>';
-                }
-            }
-        }
-        echo json_encode($html);
-        die;
     }
 }

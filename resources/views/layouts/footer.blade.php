@@ -8,7 +8,7 @@
 ?>
 <section class="maps">
 	<div class="container">
-		<h3>Hệ thống chi nhánh và đại lý</h2>
+		<h3>Hệ thống chi nhánh và đại lý</h3>
 		<ul class="nav nav-pills" role="tablist">
                 <li role="presentation" class="active"><a href="#Maps1" aria-controls="home" role="tab"
                                                           data-toggle="tab">Hà nội</a></li>

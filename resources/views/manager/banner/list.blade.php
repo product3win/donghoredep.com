@@ -52,10 +52,10 @@
                             <th width="1%">STT</th>
                             <th width="1%"><input id="checkAll" type="checkbox"></th>
                             <th width="10%">Tiêu đề</th>
-                            <th width="10%">Link video intro</th>
+                            <th width="10%">Link intro</th>
                             <th width="5%">Ngày tạo</th>
                             <th width="1%"><i class="fa fa-circle fa-admin"></i></th>
-                            <th width="2%">Action</th>
+                            <th width="1%"><i class="fa fa-edit fa-admin"></i></th>
                         </tr>
                         @foreach($data as $k=>$item)
                             <tr>

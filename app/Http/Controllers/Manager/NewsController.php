@@ -6,11 +6,9 @@ use App\Http\Controllers\BaseAdminController;
 use App\model\News;
 use App\model\Trash;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 
-class NewsController extends BaseAdminController
-{
+class NewsController extends BaseAdminController{
     protected $arrStatus = array(-1 => 'Chọn trạng thái', \CGlobal::status_show => 'Hiện', \CGlobal::status_hide => 'Ẩn');
     public function __construct()
     {
@@ -30,9 +28,7 @@ class NewsController extends BaseAdminController
         $search['news_status'] = (int)$request->has('news_status') ? $request->news_status : -1;
         $dataSearch = News::searchByCondition($search, $limit, $offset, $total);
         $paging = $total > 0 ? \Pagging::getPager($pageScroll, $pageNo, $total, $limit, $search,$request->url()) : '';
-
         $optionStatus = \Utility::getOption($this->arrStatus, $search['news_status']);
-
         return view('manager.news.list', ['search' => $search, 'data' => $dataSearch, 'total' => $total, 'paging' => $paging, 'optionStatus' => $optionStatus]);
     }
     public function getItem(Request $request,$id=0){
@@ -40,10 +36,7 @@ class NewsController extends BaseAdminController
         $this->title($id==0?'Thêm mới News':'Cập nhật News');
         $this->breadcrumb([['title'=>'News','link'=>\route('admin.news'),'active'=>''],['title'=>$id==0?'thêm mới':'cập nhật','link'=>\route('admin.news_edit',['id'=>$id]),'active'=>'active']]);
         \Loader::loadJS('libs\ckeditor\ckeditor.js',\CGlobal::$postHead);
-        $data = array();
-        if($id>0){
-            $data = News::getById($id);
-        }
+        $data = $id>0?$data = News::getById($id):array();
         $optionStatus = \Utility::getOption($this->arrStatus,isset($data['news_status'])?$data['news_status']:\CGlobal::status_show);
         return view('Manager.news.add',['id'=>$id,'data'=>$data,'optionStatus'=>$optionStatus]);
     }

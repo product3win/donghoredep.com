@@ -65,7 +65,7 @@
                             <th width="5%">Thứ tự</th>
                             <th width="5%">Ngày tạo</th>
                             <th width="1%"><i class="fa fa-circle fa-admin"></i> </th>
-                            <th width="2%">Action</th>
+                            <th width="1%"><i class="fa fa-edit fa-admin"></i></th>
                         </tr>
                         @foreach($data as $k=>$item)
                             <tr>
@@ -89,8 +89,8 @@
                                         <i class="fa fa-circle fa-admin red"></i>
                                     @endif
                                 </td>
-                                <td><a href="{{route('admin.category_edit',['id'=>$item->category_id])}}"><i
-                                                class="fa fa-edit fa-admin"></i></a></td>
+                                <td><a href="{{route('admin.category_edit',['id'=>$item->category_id])}}">
+                                        <i class="fa fa-edit fa-admin"></i></a></td>
                             </tr>
                         @endforeach
                     </table>

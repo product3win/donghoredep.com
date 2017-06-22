@@ -7,19 +7,15 @@
  */
 
 namespace App\Http\Controllers\Manager;
-
-
 use App\Http\Controllers\BaseAdminController;
 use App\model\Order;
 use App\model\Trash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-class OrderController extends BaseAdminController
-{
+class OrderController extends BaseAdminController{
     protected $arrStatus = array(-1 => 'Chọn trạng thái', \CGlobal::status_show => 'Hiện', \CGlobal::status_hide => 'Ẩn');
-    public function __construct()
-    {
+    public function __construct(){
         parent::__construct();
     }
     public function listView(Request $request){
@@ -39,31 +35,23 @@ class OrderController extends BaseAdminController
         $optionStatus = \Utility::getOption($this->arrStatus, $search['order_status']);
         return view('manager.order.list', ['search' => $search, 'data' => $dataSearch, 'total' => $total, 'paging' => $paging, 'optionStatus' => $optionStatus]);
     }
-    public function getItem(Request $request, $id = 0)
-    {
+    public function getItem(Request $request, $id = 0){
         $this->menu();
         $this->title('Chi tiết đơn hàng');
         $this->breadcrumb([['title' => 'Order', 'link' => \route('admin.order'), 'active' => ''], ['title' => $id == 0 ? 'thêm mới' : 'cập nhật', 'link' => \route('admin.order_edit', ['id' => $id]), 'active' => 'active']]);
-        $data = array();
-        if ($id > 0) {
-            $data = Order::getById($id);
-        }
+        $data = $id > 0 ? $data = Order::getById($id):array();
         $optionStatus = \Utility::getOption($this->arrStatus, isset($data['order_status']) ? $data['order_status'] : \CGlobal::status_show);
         return view('Manager.order.add', ['id' => $id, 'data' => $data, 'optionStatus' => $optionStatus]);
     }
 
-    public function postItem(Request $request, $id = 0)
-    {
+    public function postItem(Request $request, $id = 0){
         $id = $id == 0 ? $request->id_hidden : $id;
-
         $data = array('order_status' => $request->order_status);
-
         Order::saveItem($data, $id);
         return redirect()->route('admin.order');
     }
 
-    public function delete(Request $request)
-    {
+    public function delete(Request $request){
         $checkID = $request->checkItem;
         $token = $request->_token;
         if (Session::token() === $token) {

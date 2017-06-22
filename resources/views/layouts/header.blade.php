@@ -18,17 +18,12 @@
         </div>
         <div class="navbar-offcanvas navbar-offcanvas-touch" id="js-bootstrap-offcanvas">
             <ul class="nav navbar-nav navbar-left ">
-                <li class="logocenter hidden-xs hidden-sm hidden-md hidden-lg">
-                    <a href="" title="">
-                        <img class="icon-zalo" src="{{asset('resources/assets/media/logo.png')}}"></img>
-                    </a>
-                </li>
                 <li class="hotline"><a href="tel:{{$hostline}}" title="host line">
                        <img class="icon-phone" src="{{asset('resources/assets/media/smart2.png')}}"></img>
                         <span><b>Hostline</b><br><span>{{Funclip::formatPhonenumber($hostline)}}</span></span>
                     </a></li>
                 <li class="zalo">
-                    <a href="#" title="zalo">
+                    <a href="tel:{{$zalo}}" title="zalo">
                         <img class="icon-zalo" src="{{asset('resources/assets/media/zalo.png')}}"></img>
                         <span><b>Zalo</b><br><span>{{Funclip::formatPhonenumber($zalo)}}</span></span>
                     </a>

@@ -54,7 +54,7 @@
                             <th width="20%">Tên Module</th>
                             <th width="20">Controller</th>
                             <th width="1%"><i class="fa fa-circle fa-admin"></i></th>
-                            <th width="2%">Action</th>
+                            <th width="1%"><i class="fa fa-edit fa-admin"></i></th>
                         </tr>
                         @foreach($data as $k=>$item)
                             <tr>

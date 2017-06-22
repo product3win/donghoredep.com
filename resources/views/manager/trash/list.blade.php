@@ -48,7 +48,7 @@
                             <th width="10%">Lớp</th>
                             <th width="10%">Thư mục</th>
                             <th width="10%">Ngày xóa</th>
-                            <th width="10%">Action</th>
+                            <th width="1%"><i class="fa fa-edit fa-admin"></i></th>
                         </tr>
                         @foreach($data as $k=>$item)
                             <tr>

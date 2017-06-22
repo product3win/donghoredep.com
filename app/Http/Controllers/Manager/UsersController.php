@@ -8,22 +8,14 @@ use App\model\Role;
 use App\model\Trash;
 use App\model\Users;
 use Illuminate\Http\Request;
-use App\model\Module;
-use Illuminate\Routing\Route;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use \Pagging;
-use PhpParser\Node\Expr\AssignOp\Mod;
 use \Utility;
 
-class UsersController extends BaseAdminController
-{
+class UsersController extends BaseAdminController{
     protected $arrStatus = array(-1 => 'Chọn trạng thái', \CGlobal::status_show => 'Hiện', \CGlobal::status_hide => 'Ẩn');
     protected $arrRole = array(-1 => 'chọn nhóm quyển');
-
-    public function __construct()
-    {
+    public function __construct(){
         parent::__construct();
         $role = Role::getAll(array(), 0);
         foreach ($role as $item) {
@@ -31,8 +23,7 @@ class UsersController extends BaseAdminController
         }
     }
 
-    public function listView(Request $request)
-    {
+    public function listView(Request $request){
         $this->menu();
         $this->title('User');
         $this->breadcrumb([['title' => 'User', 'link' => route('admin.user'), 'active' => 'active']]);
@@ -42,35 +33,27 @@ class UsersController extends BaseAdminController
         $offset = ($pageNo - 1) * $limit;
         $search = array();
         $total = 0;
-
         $search['name'] = $request->has('name') ? addslashes($request->name) : '';
         $search['user_status'] = (int)$request->has('user_status') ? $request->user_status : -1;
         $search['user_role_id'] = (int)$request->has('user_role_id') ? $request->user_role_id : -1;
         $dataSearch = Users::searchByCondition($search, $limit, $offset, $total);
-//        $total = 5000;
         $paging = $total > 0 ? Pagging::getPager($pageScroll, $pageNo, $total, $limit, $search, $request->url()) : '';
-
         $optionStatus = Utility::getOption($this->arrStatus, $search['user_status']);
         $optionRole = \Utility::getOption($this->arrRole, $search['user_role_id']);
         return view('manager.user.list', ['search' => $search, 'data' => $dataSearch, 'total' => $total, 'paging' => $paging, 'optionStatus' => $optionStatus, 'optionRole' => $optionRole, 'arrRole' => $this->arrRole]);
     }
 
-    public function getItem(Request $request, $id = 0)
-    {
+    public function getItem(Request $request, $id = 0){
         $this->menu();
         $this->title($id == 0 ? 'Thêm mới User' : 'Cập nhật User');
         $this->breadcrumb([['title' => 'User', 'link' => \route('admin.user'), 'active' => ''], ['title' => $id == 0 ? 'thêm mới' : 'cập nhật', 'link' => \route('admin.user_edit', ['id' => $id]), 'active' => 'active']]);
-        $data = array();
-        if ($id > 0) {
-            $data = Users::getById($id);
-        }
+        $data = $id > 0 ? $data = Users::getById($id): array();
         $optionStatus = Utility::getOption($this->arrStatus, isset($data['user_status']) ? $data['user_status'] : -1);
         $optionRole = \Utility::getOption($this->arrRole, isset($data['user_role_id']) ? $data['user_role_id'] : -1);
         return view('Manager.user.add', ['id' => $id, 'data' => $data, 'optionStatus' => $optionStatus, 'arrRole' => $this->arrRole, 'optionRole' => $optionRole]);
     }
 
-    public function postItem(Request $request, $id = 0)
-    {
+    public function postItem(Request $request, $id = 0){
         $id = ($id == 0) ? $request->id_hidden : $id;
         $this->validate($request, [
             'name' => 'required|string',
@@ -103,8 +86,7 @@ class UsersController extends BaseAdminController
         return redirect()->route('admin.user');
     }
 
-    public function profileUser(Request $request)
-    {
+    public function profileUser(Request $request){
         $this->menu();
         $this->title('Cập nhật User');
         $this->breadcrumb([['title' => 'cập nhật profile', 'link' => '', 'active' => 'active']]);
@@ -113,8 +95,7 @@ class UsersController extends BaseAdminController
         return view('manager.user.profile', ['id' => Session::get('user')['user_id'], 'data' => $data]);
     }
 
-    public function postprofileUser(Request $request)
-    {
+    public function postprofileUser(Request $request){
         $this->validate($request, [
             'name' => 'required|string',
             'user_phone' => 'required|string|min:9|max:50',
@@ -130,23 +111,20 @@ class UsersController extends BaseAdminController
         return redirect()->route('index');
     }
 
-    public function changeass(Request $request)
-    {
+    public function changeass(Request $request){
         $this->menu();
         $this->title('Change pass');
         $this->breadcrumb([['title' => 'cập nhật password', 'link' => '', 'active' => 'active']]);
         return view('Manager.user.changepass', ['id' => Session::get('user')['user_id']]);
     }
 
-    public function postChangeass(Request $request)
-    {
+    public function postChangeass(Request $request){
         $this->validate($request, ['password' => 'required|string|min:6|confirmed']);
         Users::saveItem(['password' => bcrypt($request->password)], $request->id_hidden);
         return redirect()->route('index');
     }
 
-    public function delete(Request $request)
-    {
+    public function delete(Request $request){
         $checkID = $request->checkItem;
         $token = $request->_token;
         if (Session::token() === $token) {

@@ -12,17 +12,13 @@ use Illuminate\Support\Facades\Session;
 use \Pagging;
 use \Utility;
 
-class ModuleController extends BaseAdminController
-{
+class ModuleController extends BaseAdminController{
     protected $arrStatus = array(-1 => 'Chọn trạng thái', \CGlobal::status_show => 'Hiện', \CGlobal::status_hide => 'Ẩn');
-
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
-    public function listView(Request $request)
-    {
+    public function listView(Request $request){
         $this->menu();
         $this->title('Module');
         $this->breadcrumb([['title' => 'Module', 'link' => route('admin.module'), 'active' => 'active']]);
@@ -32,14 +28,11 @@ class ModuleController extends BaseAdminController
         $offset = ($pageNo - 1) * $limit;
         $search = array();
         $total = 0;
-
         $search['module_title'] = $request->has('module_title') ? addslashes($request->module_title) : '';
         $search['module_status'] = (int)$request->has('module_status') ? $request->module_status : -1;
         $dataSearch = Module::searchByCondition($search, $limit, $offset, $total);
         $paging = $total > 0 ? Pagging::getPager($pageScroll, $pageNo, $total, $limit, $search,$request->url()) : '';
-
         $optionStatus = Utility::getOption($this->arrStatus, $search['module_status']);
-
         return view('manager.module.list', ['search' => $search, 'data' => $dataSearch, 'total' => $total, 'paging' => $paging, 'optionStatus' => $optionStatus]);
     }
 
@@ -47,10 +40,7 @@ class ModuleController extends BaseAdminController
         $this->menu();
         $this->title($id==0?'Thêm mới Module':'Cập nhật Module');
         $this->breadcrumb([['title'=>'Module','link'=>\route('admin.module'),'active'=>''],['title'=>$id==0?'thêm mới':'cập nhật','link'=>\route('admin.module_edit',['id'=>$id]),'active'=>'active']]);
-        $data = array();
-        if($id>0){
-            $data = Module::getById($id);
-        }
+        $data = $id>0?$data = Module::getById($id):array();
         $optionStatus = Utility::getOption($this->arrStatus,isset($data['module_status'])?$data['module_status']:-1);
         return view('Manager.module.add',['id'=>$id,'data'=>$data,'optionStatus'=>$optionStatus]);
     }

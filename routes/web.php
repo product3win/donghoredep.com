@@ -19,11 +19,11 @@ Route::get('ho-tro-khach-hang/{name?}', 'Home\HotroKhachHang@index')->name('hotr
 
 
 Route::get('/', 'Home\HomeController@index')->name('index');
-Route::get('chi-tiet', 'Home\HomeController@details')->name('details');
-Route::get('{name?}.html','Home\HomeController@category')->name('home.category')->where(['name'=>'[0-9a-zA-z\-]+']);
-Route::get('dong-ho/{name?}.html','Home\HomeController@details')->name('home.details')->where(['name'=>'[0-9a-zA-z\-]+']);
-Route::get('{name?}/{product?}.html','Home\HomeController@details')->name('home.detailsCT')->where(['name'=>'[0-9a-zA-z\-]+','product'=>'[0-9a-zA-z\-]+']);
-Route::get('ajax-index-product','Home\HomeController@ajaxindexproduct')->name('home.ajaxindexproduct');
+Route::get('{name?}.html', 'Home\HomeController@details')->name('details')->where(['name'=>'[0-9a-zA-z\-]+']);
+Route::get('danh-muc/{name?}.html','Home\HomeController@category')->name('home.category')->where(['name'=>'[0-9a-zA-z\-]+']);
+//Route::get('dong-ho/{name?}.html','Home\HomeController@details')->name('home.details')->where(['name'=>'[0-9a-zA-z\-]+']);
+//Route::get('{name?}/{product?}.html','Home\HomeController@details')->name('home.detailsCT')->where(['name'=>'[0-9a-zA-z\-]+','product'=>'[0-9a-zA-z\-]+']);
+//Route::get('ajax-index-product','Home\HomeController@ajaxindexproduct')->name('home.ajaxindexproduct');
 
 // admin
 Auth::routes();
@@ -73,7 +73,6 @@ Route::group(array('prefix' => 'admin', 'before' => '','middleware'=>'web'), fun
     Route::get('news/edit/{id?}', 'Manager\NewsController@getItem')->name('admin.news_edit')->where('id', '[0-9]+');
     Route::post('news/edit/{id?}', 'Manager\NewsController@postItem')->name('admin.news_edit')->where('id', '[0-9]+');
     Route::match(['GET','POST'],'news/delete',  'Manager\NewsController@delete')->name('admin.news_delete');
-    
     /// banner
     Route::get('banner', 'Manager\BannerController@listView')->name('admin.banner');
     Route::get('banner/edit/{id?}', 'Manager\BannerController@getItem')->name('admin.banner_edit')->where('id', '[0-9]+');
