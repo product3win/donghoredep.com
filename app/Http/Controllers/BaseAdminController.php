@@ -29,7 +29,7 @@ class BaseAdminController extends Controller
         $arMenu[] = array('title' => 'Tin tức', 'link' => route('admin.news'), 'icon' => 'fa-quote-right fa-admin', 'active' => $this->checkRouteName($rName, 'admin.news') ? 'active' : '');
         $arMenu[] = array('title' => 'Banner', 'link' => route('admin.banner'), 'icon' => 'fa-image fa-admin', 'active' => $this->checkRouteName($rName, 'admin.banner') ? 'active' : '');
         $arMenu[] = array('title' => 'Static', 'link' => route('admin.static'), 'icon' => 'fa-cogs fa-admin', 'active' => $this->checkRouteName($rName, 'admin.static') ? 'active' : '');
-        $arMenu[] = array('title' => 'Hệ thống', 'link' => 'javascrip:void(0)', 'icon' => 'fa-angle-down',
+        $arMenu[] = array('title' => 'Hệ thống', 'link' => 'javascript:void(0)', 'icon' => 'fa-angle-down',
             'submenu' => array(
                 array('title' => 'Module', 'link' => route('admin.module'), 'icon' => 'fa-gears fa-admin', 'active' => $this->checkRouteName($rName, 'admin.module') ? 'active' : ''),
                 array('title' => 'Phân quyển', 'link' => route('admin.role'), 'icon' => 'fa-key fa-admin', 'active' => $this->checkRouteName($rName, 'admin.role') ? 'active' : ''),

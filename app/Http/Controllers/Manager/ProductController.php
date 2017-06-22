@@ -82,7 +82,7 @@ class ProductController extends BaseAdminController{
         $data['product_brand_id'] = $request->product_brand_id;
         $data['product_code'] = addslashes($request->product_code);
         $data['product_title'] = addslashes($request->product_title);
-        $data['product_alias'] = Utility::pregReplaceStringAliasNoSpace($request->product_title).Utility::pregReplaceStringAlias($request->product_code);
+        $data['product_alias'] = Utility::pregReplaceStringAliasNoSpace($request->product_title);
         $data['product_price'] = $request->product_price;
         $data['product_price_saleof'] = $request->product_price_saleof;
         $data['product_video'] = serialize($request->product_video);
